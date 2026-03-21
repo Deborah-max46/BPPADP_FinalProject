@@ -156,36 +156,7 @@ This system includes features like:
 └─────────────────────┘         └─────────────────────────┘
 ```
 
----
-
-## #7. Project Timeline
-
-| Phase | Tasks | Duration | Milestone |
-|---|---|---|---|
-| **Phase 1 – Initiation** | Define scope · Identify stakeholders | Weeks 1–2 | Scope Document Approved |
-| **Phase 2 – Requirements** | Stakeholder interviews · Document requirements · Define data schema | Weeks 3–5 | Requirements Finalized |
-| **Phase 3 – Design** | System architecture · UI/UX prototypes · UML diagrams | Weeks 6–9 | Design Approved |
-| **Phase 4 – Development** | Frontend · Backend · Database · Analytics · Integrations | Weeks 10–21 | Modules Complete |
-| **Phase 5 – Testing** | Unit · Integration · UAT · Security audit | Weeks 22–24 | System Validated |
-| **Phase 6 – Deployment** | Production deploy · User training · Documentation | Week 25 | System Deployed |
-
-**Total Duration: 25 Weeks**
-
-**Critical Path:** Backend Development → Database Integration → System Testing → Deployment
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Frontend (Prototype) | C# · ASP.NET Core MVC · Razor Pages |
-| Frontend (Full System) | React.js |
-| Backend | Java · Spring Boot |
-| Database | PostgreSQL · MongoDB |
-| Authentication | Spring Security · JWT |
-| Analytics | Python · Flask |
-| Styling | Bootstrap 5 · Tailwind CSS |
+|
 
 ---
 
