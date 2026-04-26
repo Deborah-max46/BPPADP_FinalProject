@@ -1,0 +1,11 @@
+@page
+@model LockoutModel
+@{
+    ViewData["Title"] = "Locked out";
+}
+
+<div class="cv-card">
+    <h1 class="cv-h1">Account locked</h1>
+    <p>This account has been locked. Please try again later.</p>
+    <a class="cv-btn cv-btn-primary" asp-page="./Login">Back to login</a>
+</div>

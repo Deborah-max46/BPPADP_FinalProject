@@ -1,0 +1,70 @@
+@page "/"
+@model IndexModel
+@inject SignInManager<ApplicationUser> SignInManager
+@{
+    ViewData["Title"] = "Consumer's Voice";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Consumer's Voice · ADECOR Rwanda</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700&family=Outfit:wght@600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="cv-landing">
+    <header class="cv-landing-header">
+        <a class="cv-brand" asp-page="/Index">
+            <span class="cv-brand-mark"><i class="fas fa-shield-halved"></i></span>
+            <span class="cv-brand-text">Consumer's <strong>Voice</strong></span>
+        </a>
+        @if (!SignInManager.IsSignedIn(User))
+        {
+            <div class="cv-landing-actions">
+                <a class="cv-btn cv-btn-outline" asp-area="Identity" asp-page="/Account/Login">Log in</a>
+                <a class="cv-btn cv-btn-primary" asp-area="Identity" asp-page="/Account/Register">Sign up</a>
+            </div>
+        }
+    </header>
+    <section class="cv-hero">
+        <div class="cv-hero-badge">🇷🇼 ADECOR Rwanda — consumer protection</div>
+        <h1>Your rights. <span>Your voice.</span> Protected.</h1>
+        <p>Report issues, track your case, and work with advocates and businesses in one transparent workspace.</p>
+        @if (!SignInManager.IsSignedIn(User))
+        {
+            <div class="cv-hero-actions">
+                <a class="cv-btn cv-btn-primary cv-btn-lg" asp-area="Identity" asp-page="/Account/Register">Get started</a>
+                <a class="cv-btn cv-btn-ghost cv-btn-lg" asp-area="Identity" asp-page="/Account/Login">I already have an account</a>
+            </div>
+        }
+    </section>
+    <section class="cv-landing-grid">
+        <article class="cv-spot card-consumer">
+            <i class="fas fa-user"></i>
+            <h3>Consumer</h3>
+            <p>Submit complaints and follow every update until resolution.</p>
+        </article>
+        <article class="cv-spot card-advocate">
+            <i class="fas fa-handshake-angle"></i>
+            <h3>Advocate</h3>
+            <p>Manage cases, update status, and coordinate with businesses.</p>
+        </article>
+        <article class="cv-spot card-business">
+            <i class="fas fa-store"></i>
+            <h3>Business</h3>
+            <p>Review complaints that involve you and respond with context.</p>
+        </article>
+        <article class="cv-spot card-admin">
+            <i class="fas fa-screwdriver-wrench"></i>
+            <h3>Administrator</h3>
+            <p>Keep categories and businesses aligned, and export insights.</p>
+        </article>
+    </section>
+    <footer class="cv-landing-footer">
+        <p>&copy; 2026 Consumer's Voice · ADECOR Rwanda</p>
+    </footer>
+</body>
+</html>

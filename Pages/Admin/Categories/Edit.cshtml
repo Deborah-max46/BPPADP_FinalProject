@@ -1,0 +1,22 @@
+@page "{id:int}"
+@model ConsumersVoiceSystemPrototype.Pages.Admin.Categories.EditModel
+@{
+    ViewData["Title"] = "Edit category";
+}
+
+<div class="cv-card cv-card-narrow">
+    <h1 class="cv-h1">Edit category</h1>
+    <form method="post">
+        <div class="cv-field">
+            <label asp-for="InputModel.Name" class="cv-label"></label>
+            <input asp-for="InputModel.Name" class="cv-input" />
+            <span asp-validation-for="InputModel.Name" class="cv-field-error"></span>
+        </div>
+        <button type="submit" class="cv-btn cv-btn-primary">Save</button>
+        <a class="cv-btn cv-btn-outline" asp-page="Index">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

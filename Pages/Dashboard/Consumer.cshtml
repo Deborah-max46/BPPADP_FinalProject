@@ -1,0 +1,19 @@
+@page
+@model ConsumersVoiceSystemPrototype.Pages.Dashboard.ConsumerModel
+@{
+    ViewData["Title"] = "Consumer dashboard";
+}
+
+<div class="cv-card">
+    <p class="cv-dashboard-role"><span class="cv-badge-soft">Consumer</span></p>
+    <h1 class="cv-h1">Welcome back</h1>
+    <p class="cv-muted">Track your complaints and stay informed.</p>
+    <div class="cv-stat-row">
+        <div class="cv-stat"><span class="cv-stat-num">@Model.OpenCount</span><span class="cv-stat-label">Open cases</span></div>
+        <div class="cv-stat"><span class="cv-stat-num">@Model.ResolvedCount</span><span class="cv-stat-label">Resolved</span></div>
+    </div>
+    <div class="cv-actions">
+        <a class="cv-btn cv-btn-primary" asp-page="/Complaints/Create">Submit a complaint</a>
+        <a class="cv-btn cv-btn-outline" asp-page="/Complaints/Mine">My complaints</a>
+    </div>
+</div>

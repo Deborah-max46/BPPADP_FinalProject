@@ -1,0 +1,22 @@
+<script>
+    (function () {
+        document.querySelectorAll('[notifications-panel] .cv-notify-toggle').forEach(function (btn) {
+            btn.addEventListener('click', function (e) {
+                e.stopPropagation();
+                var root = btn.closest('[notifications-panel]');
+                var dd = root && root.querySelector('.cv-notify-dropdown');
+                if (!dd) return;
+                var hidden = dd.hasAttribute('hidden');
+                document.querySelectorAll('.cv-notify-dropdown').forEach(function (x) { x.setAttribute('hidden', ''); });
+                if (hidden) dd.removeAttribute('hidden'); else dd.setAttribute('hidden', '');
+                btn.setAttribute('aria-expanded', hidden ? 'true' : 'false');
+            });
+        });
+        document.querySelectorAll('[notifications-panel]').forEach(function (p) {
+            p.addEventListener('click', function (e) { e.stopPropagation(); });
+        });
+        document.addEventListener('click', function () {
+            document.querySelectorAll('.cv-notify-dropdown').forEach(function (dd) { dd.setAttribute('hidden', ''); });
+        });
+    })();
+</script>

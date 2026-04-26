@@ -1,0 +1,36 @@
+@page
+@model ConsumersVoiceSystemPrototype.Pages.Admin.Businesses.CreateModel
+@{
+    ViewData["Title"] = "New business";
+}
+
+<div class="cv-card cv-card-narrow">
+    <h1 class="cv-h1">New business</h1>
+    <form method="post">
+        <div class="cv-field">
+            <label asp-for="InputModel.Name" class="cv-label"></label>
+            <input asp-for="InputModel.Name" class="cv-input" />
+            <span asp-validation-for="InputModel.Name" class="cv-field-error"></span>
+        </div>
+        <div class="cv-field">
+            <label asp-for="InputModel.ContactEmail" class="cv-label"></label>
+            <input asp-for="InputModel.ContactEmail" class="cv-input" />
+            <span asp-validation-for="InputModel.ContactEmail" class="cv-field-error"></span>
+        </div>
+        <div class="cv-field">
+            <label asp-for="InputModel.Phone" class="cv-label"></label>
+            <input asp-for="InputModel.Phone" class="cv-input" />
+        </div>
+        <div class="cv-field">
+            <label asp-for="InputModel.OwnerEmail" class="cv-label"></label>
+            <input asp-for="InputModel.OwnerEmail" class="cv-input" />
+            <span asp-validation-for="InputModel.OwnerEmail" class="cv-field-error"></span>
+        </div>
+        <button type="submit" class="cv-btn cv-btn-primary">Save</button>
+        <a class="cv-btn cv-btn-outline" asp-page="Index">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

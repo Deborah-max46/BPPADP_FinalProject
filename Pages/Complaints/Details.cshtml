@@ -1,0 +1,129 @@
+@page "{id:int}"
+@model ConsumersVoiceSystemPrototype.Pages.Complaints.DetailsModel
+@{
+    var d = Model.Detail!;
+    var access = Model.Access!;
+    ViewData["Title"] = d.Title;
+}
+
+<div class="cv-card cv-card-wide">
+    <div class="cv-toolbar">
+        <h1 class="cv-h1">Case <span class="cv-badge-soft">#@d.CaseNumber</span></h1>
+        @if (User.IsInRole(RoleNames.Consumer))
+        {
+            <a class="cv-btn cv-btn-outline" asp-page="/Complaints/Mine">Back</a>
+        }
+        else if (User.IsInRole(RoleNames.Advocate) || User.IsInRole(RoleNames.Admin))
+        {
+            <a class="cv-btn cv-btn-outline" asp-page="/Advocate/Complaints">Back</a>
+        }
+        else if (User.IsInRole(RoleNames.Business))
+        {
+            <a class="cv-btn cv-btn-outline" asp-page="/Business/Complaints">Back</a>
+        }
+    </div>
+    <dl class="cv-dl">
+        <dt>Status</dt><dd>@d.Status</dd>
+        <dt>Category</dt><dd>@d.CategoryName</dd>
+        <dt>Business</dt><dd>@(d.BusinessName ?? "—")</dd>
+        <dt>Consumer</dt><dd>@d.ConsumerName</dd>
+        <dt>Advocate</dt><dd>@(d.AdvocateName ?? "—")</dd>
+    </dl>
+    <section class="cv-section">
+        <h2>Description</h2>
+        <p class="cv-prose">@d.Description</p>
+    </section>
+
+    @if (d.Attachments.Count > 0)
+    {
+        <section class="cv-section">
+            <h2>Attachments</h2>
+            <ul class="cv-attach-list">
+                @foreach (var a in d.Attachments)
+                {
+                    <li>
+                        <a asp-page="/Complaints/Attachment" asp-route-id="@a.Id">@a.FileName</a>
+                        <span class="cv-muted">(@a.UploadedByName · @(a.SizeBytes / 1024) KB · @a.CreatedAt.ToLocalTime().ToString("g"))</span>
+                    </li>
+                }
+            </ul>
+        </section>
+    }
+
+    @if (access.CanUploadAttachment)
+    {
+        <section class="cv-section">
+            <h2>Add files</h2>
+            <form method="post" asp-page-handler="UploadAttachments" asp-route-id="@d.CaseNumber" enctype="multipart/form-data">
+                <div class="cv-field">
+                    <label class="cv-label">Files (PDF, images, Office — max 10 MB each)</label>
+                    <input name="UploadFiles" type="file" multiple class="cv-input" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.doc,.docx,.xlsx,.txt" />
+                </div>
+                <button type="submit" class="cv-btn cv-btn-outline">Upload</button>
+            </form>
+        </section>
+    }
+
+    @if (access.CanClaimAdvocate || access.CanAssignAdvocateAsAdmin || access.CanUnassignAdvocate || access.CanChangeStatus)
+    {
+        <section class="cv-section cv-panel">
+            <h3>Case assignment &amp; status</h3>
+            @if (access.CanClaimAdvocate)
+            {
+                <form method="post" asp-page-handler="ClaimAdvocate" asp-route-id="@d.CaseNumber" class="cv-inline-block">
+                    <button type="submit" class="cv-btn cv-btn-primary">Claim this case (assign me)</button>
+                </form>
+            }
+            @if (access.CanAssignAdvocateAsAdmin && Model.AdvocateOptions != null)
+            {
+                <form method="post" asp-page-handler="AssignAdvocate" asp-route-id="@d.CaseNumber" class="cv-form-row">
+                    <select asp-for="AssignAdvocateUserId" asp-items="Model.AdvocateOptions" class="cv-input"></select>
+                    <button type="submit" class="cv-btn cv-btn-outline">Assign advocate</button>
+                </form>
+            }
+            @if (access.CanUnassignAdvocate)
+            {
+                <form method="post" asp-page-handler="UnassignAdvocate" asp-route-id="@d.CaseNumber" class="cv-inline-block">
+                    <button type="submit" class="cv-btn cv-btn-outline">Unassign advocate</button>
+                </form>
+            }
+            @if (access.CanChangeStatus)
+            {
+                <form method="post" asp-page-handler="SetStatus" asp-route-id="@d.CaseNumber" class="cv-form-row">
+                    <select asp-for="StatusInput.Status" asp-items="Model.StatusOptions" class="cv-input"></select>
+                    <button type="submit" class="cv-btn cv-btn-primary">Update status</button>
+                </form>
+            }
+        </section>
+    }
+
+    <section class="cv-section">
+        <h2>Messages</h2>
+        <ul class="cv-thread">
+            @foreach (var m in d.Messages)
+            {
+                <li>
+                    <strong>@m.AuthorName</strong>
+                    <span class="cv-muted">@m.CreatedAt.ToLocalTime().ToString("g")</span>
+                    <p>@m.Body</p>
+                </li>
+            }
+        </ul>
+
+        @if (access.CanAddMessage)
+        {
+            <form method="post" asp-page-handler="AddMessage" asp-route-id="@d.CaseNumber">
+                <div class="cv-field">
+                    <label asp-for="MessageInput.Body" class="cv-label">Add message</label>
+                    <textarea asp-for="MessageInput.Body" class="cv-input cv-textarea" rows="4"></textarea>
+                    <span asp-validation-for="MessageInput.Body" class="cv-field-error"></span>
+                </div>
+                <button type="submit" class="cv-btn cv-btn-primary">Send</button>
+            </form>
+        }
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

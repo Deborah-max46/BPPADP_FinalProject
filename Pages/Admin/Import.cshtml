@@ -1,0 +1,28 @@
+@page
+@model ConsumersVoiceSystemPrototype.Pages.Admin.ImportModel
+@{
+    ViewData["Title"] = "Import complaints";
+}
+
+<div class="cv-card cv-card-wide">
+    <h1 class="cv-h1">Import complaints (Excel)</h1>
+    <p class="cv-muted">First row must be headers: <code>Title</code>, <code>Description</code>, <code>CategoryName</code>, <code>ConsumerEmail</code>. Consumer accounts must exist and have Consumer role.</p>
+    <form method="post" enctype="multipart/form-data">
+        <div class="cv-field">
+            <input name="Upload" type="file" accept=".xlsx,.xls" class="cv-input" required />
+        </div>
+        <button type="submit" class="cv-btn cv-btn-primary">Upload</button>
+    </form>
+    @if (Model.Skipped.Count > 0)
+    {
+        <div class="cv-section">
+            <h3>Skipped rows</h3>
+            <ul>
+                @foreach (var s in Model.Skipped)
+                {
+                    <li>@s</li>
+                }
+            </ul>
+        </div>
+    }
+</div>

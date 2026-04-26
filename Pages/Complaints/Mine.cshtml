@@ -1,0 +1,39 @@
+@page
+@model ConsumersVoiceSystemPrototype.Pages.Complaints.MineModel
+@{
+    ViewData["Title"] = "My complaints";
+}
+
+<div class="cv-card cv-card-wide">
+    <div class="cv-toolbar">
+        <h1 class="cv-h1">My complaints</h1>
+        <a class="cv-btn cv-btn-primary" asp-page="/Complaints/Create">New complaint</a>
+    </div>
+    <table class="cv-table">
+        <thead>
+            <tr>
+                <th>Reference</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Business</th>
+                <th>Status</th>
+                <th>Updated</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var r in Model.Rows)
+        {
+            <tr>
+                <td><span class="cv-badge-soft">#@r.CaseNumber</span></td>
+                <td>@r.Title</td>
+                <td>@r.CategoryName</td>
+                <td>@(r.BusinessName ?? "—")</td>
+                <td>@r.Status</td>
+                <td>@r.UpdatedAt.ToLocalTime().ToString("g")</td>
+                <td><a asp-page="/Complaints/Details" asp-route-id="@r.CaseNumber">View</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

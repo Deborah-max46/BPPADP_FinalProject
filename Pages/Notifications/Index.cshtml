@@ -1,0 +1,39 @@
+@page
+@model ConsumersVoiceSystemPrototype.Pages.Notifications.IndexModel
+@{
+    ViewData["Title"] = "Notifications";
+}
+
+<div class="cv-card cv-card-wide">
+    <div class="cv-toolbar">
+        <h1 class="cv-h1">Notifications</h1>
+        @if (Model.Items.Any(i => !i.IsRead))
+        {
+            <form asp-page-handler="MarkAll" method="post">
+                <button type="submit" class="cv-btn cv-btn-outline">Mark all read</button>
+            </form>
+        }
+    </div>
+    <ul class="cv-notify-full-list">
+        @foreach (var n in Model.Items)
+        {
+            <li class="@(n.IsRead ? "read" : "unread")">
+                <div>
+                    <p>@n.Message</p>
+                    <span class="cv-muted">@n.CreatedAt.ToLocalTime().ToString("g")</span>
+                    @if (n.ComplaintId is { } cid)
+                    {
+                        <a asp-page="/Complaints/Details" asp-route-id="@cid">Open case</a>
+                    }
+                </div>
+                @if (!n.IsRead)
+                {
+                    <form asp-page-handler="MarkOne" method="post">
+                        <input type="hidden" name="id" value="@n.Id" />
+                        <button type="submit" class="cv-link-btn">Mark read</button>
+                    </form>
+                }
+            </li>
+        }
+    </ul>
+</div>

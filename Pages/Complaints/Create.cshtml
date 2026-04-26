@@ -1,0 +1,43 @@
+@page
+@model ConsumersVoiceSystemPrototype.Pages.Complaints.CreateModel
+@{
+    ViewData["Title"] = "Submit complaint";
+}
+
+<div class="cv-card cv-card-wide">
+    <h1 class="cv-h1">Submit a complaint</h1>
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="cv-alert cv-alert-error"></div>
+        <div class="cv-field">
+            <label asp-for="InputModel.Title" class="cv-label"></label>
+            <input asp-for="InputModel.Title" class="cv-input" />
+            <span asp-validation-for="InputModel.Title" class="cv-field-error"></span>
+        </div>
+        <div class="cv-field">
+            <label asp-for="InputModel.CategoryId" class="cv-label"></label>
+            <select asp-for="InputModel.CategoryId" asp-items="Model.CategoryOptions" class="cv-input"></select>
+        </div>
+        <div class="cv-field">
+            <label asp-for="InputModel.BusinessId" class="cv-label"></label>
+            <select asp-for="InputModel.BusinessId" asp-items="Model.BusinessOptions" class="cv-input">
+                <option value="">— Not sure / not listed —</option>
+            </select>
+        </div>
+        <div class="cv-field">
+            <label asp-for="InputModel.Description" class="cv-label"></label>
+            <textarea asp-for="InputModel.Description" class="cv-input cv-textarea" rows="6"></textarea>
+            <span asp-validation-for="InputModel.Description" class="cv-field-error"></span>
+        </div>
+        <div class="cv-field">
+            <label class="cv-label">Attachments (optional)</label>
+            <input name="UploadFiles" type="file" multiple class="cv-input" accept=".pdf,.jpg,.jpeg,.png,.gif,.webp,.doc,.docx,.xlsx,.txt" />
+            <span class="cv-muted">PDF, images, Office — max 10 MB per file.</span>
+        </div>
+        <button type="submit" class="cv-btn cv-btn-primary">Submit</button>
+        <a class="cv-btn cv-btn-outline" asp-page="/Complaints/Mine">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

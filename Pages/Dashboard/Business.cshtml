@@ -1,0 +1,15 @@
+@page
+@model ConsumersVoiceSystemPrototype.Pages.Dashboard.BusinessModel
+@{
+    ViewData["Title"] = "Business dashboard";
+}
+
+<div class="cv-card">
+    <p class="cv-dashboard-role"><span class="cv-badge-soft">Business</span></p>
+    <h1 class="cv-h1">@Model.BusinessName</h1>
+    <p class="cv-muted">Respond to complaints that reference your business.</p>
+    <div class="cv-stat-row">
+        <div class="cv-stat"><span class="cv-stat-num">@Model.OpenAgainstBusiness</span><span class="cv-stat-label">Open complaints</span></div>
+    </div>
+    <a class="cv-btn cv-btn-primary" asp-page="/Business/Complaints">View complaints</a>
+</div>

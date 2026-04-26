@@ -1,33 +1,17 @@
-﻿namespace ConsumersVoiceSystemPrototype.Models
+namespace ConsumersVoiceSystemPrototype.Models;
+
+public enum UserRole
 {
-    public enum UserRole
-    {
-        Consumer,
-        Advocate,
-        Admin,
-        Business
-    }
+    Consumer,
+    Advocate,
+    Admin,
+    Business
+}
 
-    public class ApplicationUser
-    {
-        public int Id { get; set; }
-        public string FullName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public UserRole Role { get; set; }
-    }
-
-    public class LoginViewModel
-    {
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-    }
-
-    public class RegisterViewModel
-    {
-        public string FullName { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string Password { get; set; } = string.Empty;
-        public UserRole Role { get; set; }
-    }
+public static class RoleNames
+{
+    public const string Consumer = nameof(UserRole.Consumer);
+    public const string Advocate = nameof(UserRole.Advocate);
+    public const string Admin = nameof(UserRole.Admin);
+    public const string Business = nameof(UserRole.Business);
 }

@@ -1,0 +1,36 @@
+@page
+@model ConsumersVoiceSystemPrototype.Pages.Business.ComplaintsModel
+@{
+    ViewData["Title"] = "Complaints";
+}
+
+<div class="cv-card cv-card-wide">
+    <h1 class="cv-h1">Complaints involving your business</h1>
+    <table class="cv-table">
+        <thead>
+            <tr>
+                <th>Ref</th>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Consumer</th>
+                <th>Status</th>
+                <th>Updated</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var r in Model.Rows)
+        {
+            <tr>
+                <td>#@r.CaseNumber</td>
+                <td>@r.Title</td>
+                <td>@r.CategoryName</td>
+                <td>@r.ConsumerName</td>
+                <td>@r.Status</td>
+                <td>@r.UpdatedAt.ToLocalTime().ToString("g")</td>
+                <td><a asp-page="/Complaints/Details" asp-route-id="@r.CaseNumber">Open</a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

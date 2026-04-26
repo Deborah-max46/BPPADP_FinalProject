@@ -1,0 +1,21 @@
+@page
+@model ConsumersVoiceSystemPrototype.Pages.Dashboard.AdminModel
+@{
+    ViewData["Title"] = "Admin dashboard";
+}
+
+<div class="cv-card">
+    <p class="cv-dashboard-role"><span class="cv-badge-soft">Administrator</span></p>
+    <h1 class="cv-h1">Platform administration</h1>
+    <div class="cv-stat-row">
+        <div class="cv-stat"><span class="cv-stat-num">@Model.TotalComplaints</span><span class="cv-stat-label">Complaints</span></div>
+        <div class="cv-stat"><span class="cv-stat-num">@Model.Categories</span><span class="cv-stat-label">Categories</span></div>
+        <div class="cv-stat"><span class="cv-stat-num">@Model.Businesses</span><span class="cv-stat-label">Businesses</span></div>
+    </div>
+    <div class="cv-actions">
+        <a class="cv-btn cv-btn-primary" asp-page="/Admin/Categories/Index">Manage categories</a>
+        <a class="cv-btn cv-btn-outline" asp-page="/Admin/Businesses/Index">Manage businesses</a>
+        <a class="cv-btn cv-btn-outline" asp-page="/Admin/Import">Import (Excel)</a>
+        <a class="cv-btn cv-btn-outline" asp-page="/Reports/Index">Reports</a>
+    </div>
+</div>

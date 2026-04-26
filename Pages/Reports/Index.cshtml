@@ -1,0 +1,111 @@
+@page
+@model ConsumersVoiceSystemPrototype.Pages.Reports.IndexModel
+@{
+    ViewData["Title"] = "Reports";
+    var chartData = Model.ChartJson;
+}
+
+<div class="cv-card cv-card-wide">
+    <h1 class="cv-h1">Complaints report</h1>
+    <form method="get" class="cv-filters">
+        <div class="cv-field">
+            <label class="cv-label">From</label>
+            <input type="date" name="From" value="@(Model.From?.ToString("yyyy-MM-dd"))" class="cv-input" />
+        </div>
+        <div class="cv-field">
+            <label class="cv-label">To</label>
+            <input type="date" name="To" value="@(Model.To?.ToString("yyyy-MM-dd"))" class="cv-input" />
+        </div>
+        <div class="cv-field">
+            <label class="cv-label">Status</label>
+            <select name="Status" class="cv-input">
+                <option value="">Any</option>
+                @foreach (var s in Enum.GetValues<ComplaintStatus>().Cast<ComplaintStatus>())
+                {
+                    if (Model.Status == s)
+                    {
+                        <option value="@s" selected>@s</option>
+                    }
+                    else
+                    {
+                        <option value="@s">@s</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="cv-field">
+            <label class="cv-label">Category</label>
+            <select name="CategoryId" class="cv-input" asp-items="Model.CategoryList"></select>
+        </div>
+        <button type="submit" class="cv-btn cv-btn-primary">Apply</button>
+    </form>
+
+    <div class="cv-toolbar">
+        <form method="post" asp-page-handler="ExportExcel">
+            <input type="hidden" name="From" value="@Model.From?.ToString("yyyy-MM-dd")" />
+            <input type="hidden" name="To" value="@Model.To?.ToString("yyyy-MM-dd")" />
+            <input type="hidden" name="Status" value="@Model.Status" />
+            <input type="hidden" name="CategoryId" value="@Model.CategoryId" />
+            <button type="submit" class="cv-btn cv-btn-outline">Export Excel</button>
+        </form>
+        <form method="post" asp-page-handler="ExportPdf">
+            <input type="hidden" name="From" value="@Model.From?.ToString("yyyy-MM-dd")" />
+            <input type="hidden" name="To" value="@Model.To?.ToString("yyyy-MM-dd")" />
+            <input type="hidden" name="Status" value="@Model.Status" />
+            <input type="hidden" name="CategoryId" value="@Model.CategoryId" />
+            <button type="submit" class="cv-btn cv-btn-outline">Export PDF</button>
+        </form>
+    </div>
+
+    <div class="cv-chart-wrap">
+        <canvas id="statusChart" height="120"></canvas>
+    </div>
+
+    <table class="cv-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Business</th>
+                <th>Consumer</th>
+                <th>Status</th>
+                <th>Created</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var r in Model.Rows)
+        {
+            <tr>
+                <td>@r.Title</td>
+                <td>@r.CategoryName</td>
+                <td>@(r.BusinessName ?? "—")</td>
+                <td>@r.ConsumerName</td>
+                <td>@r.Status</td>
+                <td>@r.CreatedAt.ToLocalTime().ToString("g")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+    <script>
+        const payload = @Html.Raw(chartData);
+        const ctx = document.getElementById('statusChart');
+        if (ctx && payload.labels && payload.labels.length) {
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: payload.labels,
+                    datasets: [{ label: 'By status', data: payload.data, backgroundColor: '#2ec489' }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                }
+            });
+        }
+    </script>
+}

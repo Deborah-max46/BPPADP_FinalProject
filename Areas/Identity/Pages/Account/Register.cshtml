@@ -1,0 +1,53 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+    var roles = new[] { RoleNames.Consumer, RoleNames.Advocate, RoleNames.Business, RoleNames.Admin };
+}
+
+<div class="cv-auth-compact cv-card cv-card-narrow">
+    <h1 class="cv-h1">Create account</h1>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="cv-alert cv-alert-error" role="alert"></div>
+        <div class="cv-field">
+            <label asp-for="Input.FullName" class="cv-label"></label>
+            <input asp-for="Input.FullName" class="cv-input" />
+            <span asp-validation-for="Input.FullName" class="cv-field-error"></span>
+        </div>
+        <div class="cv-field">
+            <label asp-for="Input.Email" class="cv-label"></label>
+            <input asp-for="Input.Email" class="cv-input" />
+            <span asp-validation-for="Input.Email" class="cv-field-error"></span>
+        </div>
+        <div class="cv-field">
+            <label asp-for="Input.Role" class="cv-label"></label>
+            <select asp-for="Input.Role" class="cv-input">
+                @foreach (var r in roles)
+                {
+                    <option value="@r">@r</option>
+                }
+            </select>
+        </div>
+        <div class="cv-field" id="business-field">
+            <label asp-for="Input.BusinessName" class="cv-label"></label>
+            <input asp-for="Input.BusinessName" class="cv-input" placeholder="Required if role is Business" />
+            <span asp-validation-for="Input.BusinessName" class="cv-field-error"></span>
+        </div>
+        <div class="cv-field">
+            <label asp-for="Input.Password" class="cv-label"></label>
+            <input asp-for="Input.Password" class="cv-input" />
+            <span asp-validation-for="Input.Password" class="cv-field-error"></span>
+        </div>
+        <div class="cv-field">
+            <label asp-for="Input.ConfirmPassword" class="cv-label"></label>
+            <input asp-for="Input.ConfirmPassword" class="cv-input" />
+            <span asp-validation-for="Input.ConfirmPassword" class="cv-field-error"></span>
+        </div>
+        <button type="submit" class="cv-btn cv-btn-primary cv-btn-block">Register</button>
+    </form>
+    <p class="cv-muted">Already registered? <a asp-page="./Login">Log in</a></p>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

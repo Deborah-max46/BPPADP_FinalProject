@@ -1,0 +1,16 @@
+@page
+@model ConsumersVoiceSystemPrototype.Pages.Dashboard.AdvocateModel
+@{
+    ViewData["Title"] = "Advocate dashboard";
+}
+
+<div class="cv-card">
+    <p class="cv-dashboard-role"><span class="cv-badge-soft">Advocate</span></p>
+    <h1 class="cv-h1">Advocate workspace</h1>
+    <p class="cv-muted">Review cases, update status, and coordinate responses.</p>
+    <div class="cv-stat-row">
+        <div class="cv-stat"><span class="cv-stat-num">@Model.AssignedToMe</span><span class="cv-stat-label">Assigned to you</span></div>
+        <div class="cv-stat"><span class="cv-stat-num">@Model.AwaitingReview</span><span class="cv-stat-label">Active pipeline</span></div>
+    </div>
+    <a class="cv-btn cv-btn-primary" asp-page="/Advocate/Complaints">Open case list</a>
+</div>

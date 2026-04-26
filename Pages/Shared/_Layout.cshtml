@@ -1,0 +1,84 @@
+@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> SignInManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewData["Title"] ?? "Consumer's Voice") · ADECOR</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="cv-body">
+    <header class="cv-header">
+        <div class="cv-header-inner">
+            <a class="cv-brand" href="@Url.Content(UserDashboardRedirect.GetLayoutHomePath(User))">
+                <span class="cv-brand-mark"><i class="fas fa-shield-halved"></i></span>
+                <span class="cv-brand-text">Consumer's <strong>Voice</strong></span>
+            </a>
+            <nav class="cv-nav">
+                @if (!SignInManager.IsSignedIn(User))
+                {
+                    <a href="@Url.Content(UserDashboardRedirect.GetLayoutHomePath(User))" class="cv-nav-link">Home</a>
+                }
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    @if (User.IsInRole(RoleNames.Consumer))
+                    {
+                        <a asp-page="/Dashboard/Consumer" class="cv-nav-link">Dashboard</a>
+                        <a asp-page="/Complaints/Mine" class="cv-nav-link">My complaints</a>
+                    }
+                    @if (User.IsInRole(RoleNames.Advocate))
+                    {
+                        <a asp-page="/Dashboard/Advocate" class="cv-nav-link">Dashboard</a>
+                        <a asp-page="/Advocate/Complaints" class="cv-nav-link">Cases</a>
+                    }
+                    @if (User.IsInRole(RoleNames.Business))
+                    {
+                        <a asp-page="/Dashboard/Business" class="cv-nav-link">Dashboard</a>
+                        <a asp-page="/Business/Complaints" class="cv-nav-link">Complaints</a>
+                    }
+                    @if (User.IsInRole(RoleNames.Admin))
+                    {
+                        <a asp-page="/Dashboard/Admin" class="cv-nav-link">Dashboard</a>
+                        <a asp-page="/Admin/Categories/Index" class="cv-nav-link">Categories</a>
+                        <a asp-page="/Admin/Businesses/Index" class="cv-nav-link">Businesses</a>
+                        <a asp-page="/Admin/Import" class="cv-nav-link">Import</a>
+                    }
+                    <a asp-page="/Reports/Index" class="cv-nav-link">Reports</a>
+                    @await Component.InvokeAsync("Notifications")
+                    <a asp-page="/Notifications/Index" class="cv-nav-link" title="All notifications"><i class="fas fa-inbox"></i></a>
+                    <span class="cv-nav-user">@User.Identity?.Name</span>
+                    <form class="cv-inline-form" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index")" method="post">
+                        <button type="submit" class="cv-btn cv-btn-ghost">Log out</button>
+                    </form>
+                }
+                else
+                {
+                    <a class="cv-btn cv-btn-outline" asp-area="Identity" asp-page="/Account/Login">Log in</a>
+                    <a class="cv-btn cv-btn-primary" asp-area="Identity" asp-page="/Account/Register">Sign up</a>
+                }
+            </nav>
+        </div>
+    </header>
+    <main class="cv-main">
+        @if (TempData["StatusMessage"] is string sm)
+        {
+            <div class="cv-alert cv-alert-success">@sm</div>
+        }
+        @if (TempData["ErrorMessage"] is string em)
+        {
+            <div class="cv-alert cv-alert-error">@em</div>
+        }
+        @RenderBody()
+    </main>
+    <footer class="cv-footer">
+        <p>&copy; 2026 Consumer's Voice · ADECOR Rwanda</p>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <partial name="_LayoutScripts" />
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

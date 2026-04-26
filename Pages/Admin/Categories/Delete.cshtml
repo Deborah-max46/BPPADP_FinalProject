@@ -1,0 +1,14 @@
+@page "{id:int}"
+@model ConsumersVoiceSystemPrototype.Pages.Admin.Categories.DeleteModel
+@{
+    ViewData["Title"] = "Delete category";
+}
+
+<div class="cv-card cv-card-narrow">
+    <h1 class="cv-h1">Delete category</h1>
+    <p>Delete <strong>@Model.Name</strong>?</p>
+    <form method="post">
+        <button type="submit" class="cv-btn cv-btn-primary">Delete</button>
+        <a class="cv-btn cv-btn-outline" asp-page="Index">Cancel</a>
+    </form>
+</div>

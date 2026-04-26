@@ -1,0 +1,41 @@
+@page
+@model ConsumersVoiceSystemPrototype.Pages.Admin.Businesses.IndexModel
+@{
+    ViewData["Title"] = "Businesses";
+}
+
+<div class="cv-card cv-card-wide">
+    <div class="cv-toolbar">
+        <h1 class="cv-h1">Businesses</h1>
+        <a class="cv-btn cv-btn-primary" asp-page="Create">Add business</a>
+    </div>
+    <table class="cv-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Contact</th>
+                <th>Owner</th>
+                <th>Complaints</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var r in Model.Rows)
+        {
+            <tr>
+                <td>@r.Name</td>
+                <td>@r.ContactEmail</td>
+                <td>@r.OwnerDisplayName</td>
+                <td>@r.ComplaintCount</td>
+                <td>
+                    <a asp-page="Edit" asp-route-id="@r.Id">Edit</a>
+                    @if (r.ComplaintCount == 0)
+                    {
+                        <a asp-page="Delete" asp-route-id="@r.Id" class="cv-link-btn cv-danger">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

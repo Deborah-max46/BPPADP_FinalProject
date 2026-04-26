@@ -1,0 +1,34 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="cv-auth-compact cv-card cv-card-narrow">
+    <h1 class="cv-h1">Log in</h1>
+    <form id="account" method="post">
+        <div asp-validation-summary="ModelOnly" class="cv-alert cv-alert-error" role="alert"></div>
+        <div class="cv-field">
+            <label asp-for="Input.Email" class="cv-label"></label>
+            <input asp-for="Input.Email" class="cv-input" autocomplete="username" />
+            <span asp-validation-for="Input.Email" class="cv-field-error"></span>
+        </div>
+        <div class="cv-field">
+            <label asp-for="Input.Password" class="cv-label"></label>
+            <input asp-for="Input.Password" class="cv-input" autocomplete="current-password" />
+            <span asp-validation-for="Input.Password" class="cv-field-error"></span>
+        </div>
+        <div class="cv-field cv-check">
+            <label asp-for="Input.RememberMe" class="cv-label-inline">
+                <input asp-for="Input.RememberMe" />
+                @Html.DisplayNameFor(m => m.Input.RememberMe)
+            </label>
+        </div>
+        <button id="login-submit" type="submit" class="cv-btn cv-btn-primary cv-btn-block">Log in</button>
+    </form>
+    <p class="cv-muted">No account? <a asp-page="./Register">Sign up</a></p>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

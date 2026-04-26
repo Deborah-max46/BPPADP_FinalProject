@@ -1,0 +1,45 @@
+@using ConsumersVoiceSystemPrototype.ViewComponents
+@model NotificationsViewComponent.NotificationsVm
+
+<div notifications-panel class="cv-notify-wrap">
+    <button type="button" class="cv-btn cv-btn-ghost cv-notify-toggle" aria-expanded="false" aria-controls="notify-dropdown">
+        <i class="fas fa-bell"></i>
+        @if (Model.UnreadCount > 0)
+        {
+            <span class="cv-badge">@Model.UnreadCount</span>
+        }
+    </button>
+    <div id="notify-dropdown" class="cv-notify-dropdown" hidden>
+        <div class="cv-notify-head">
+            <span>Notifications</span>
+            @if (Model.UnreadCount > 0)
+            {
+                <form asp-page="/Notifications/Index" asp-page-handler="MarkAll" method="post" class="cv-inline-form">
+                    <button type="submit" class="cv-link-btn">Mark all read</button>
+                </form>
+            }
+        </div>
+        @if (Model.Items == null || Model.Items.Count == 0)
+        {
+            <p class="cv-notify-empty">No notifications yet.</p>
+        }
+        else
+        {
+            <ul class="cv-notify-list">
+                @foreach (var n in Model.Items)
+                {
+                    <li class="@(n.IsRead ? "read" : "unread")">
+                        <form asp-page="/Notifications/Index" asp-page-handler="MarkOne" method="post" class="cv-notify-item-form">
+                            <input type="hidden" name="id" value="@n.Id" />
+                            <button type="submit" class="cv-notify-item-btn">
+                                <span class="cv-notify-msg">@n.Message</span>
+                                <span class="cv-notify-time">@n.CreatedAt.ToLocalTime().ToString("g")</span>
+                            </button>
+                        </form>
+                    </li>
+                }
+            </ul>
+        }
+        <a asp-page="/Notifications/Index" class="cv-notify-all">View all</a>
+    </div>
+</div>

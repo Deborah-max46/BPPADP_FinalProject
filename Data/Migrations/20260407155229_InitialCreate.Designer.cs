@@ -4,6 +4,7 @@ using ConsumersVoiceSystemPrototype.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ConsumersVoiceSystemPrototype.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260407155229_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -188,48 +191,6 @@ namespace ConsumersVoiceSystemPrototype.Data.Migrations
                     b.HasIndex("ConsumerId");
 
                     b.ToTable("Complaints");
-                });
-
-            modelBuilder.Entity("ConsumersVoiceSystemPrototype.Models.ComplaintAttachment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ComplaintId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("FileSizeBytes")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("StoredFileName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UploadedByUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ComplaintId");
-
-                    b.HasIndex("UploadedByUserId");
-
-                    b.ToTable("ComplaintAttachments");
                 });
 
             modelBuilder.Entity("ConsumersVoiceSystemPrototype.Models.ComplaintMessage", b =>
@@ -478,25 +439,6 @@ namespace ConsumersVoiceSystemPrototype.Data.Migrations
                     b.Navigation("Consumer");
                 });
 
-            modelBuilder.Entity("ConsumersVoiceSystemPrototype.Models.ComplaintAttachment", b =>
-                {
-                    b.HasOne("ConsumersVoiceSystemPrototype.Models.Complaint", "Complaint")
-                        .WithMany("Attachments")
-                        .HasForeignKey("ComplaintId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ConsumersVoiceSystemPrototype.Models.ApplicationUser", "UploadedBy")
-                        .WithMany()
-                        .HasForeignKey("UploadedByUserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Complaint");
-
-                    b.Navigation("UploadedBy");
-                });
-
             modelBuilder.Entity("ConsumersVoiceSystemPrototype.Models.ComplaintMessage", b =>
                 {
                     b.HasOne("ConsumersVoiceSystemPrototype.Models.ApplicationUser", "Author")
@@ -597,8 +539,6 @@ namespace ConsumersVoiceSystemPrototype.Data.Migrations
 
             modelBuilder.Entity("ConsumersVoiceSystemPrototype.Models.Complaint", b =>
                 {
-                    b.Navigation("Attachments");
-
                     b.Navigation("Messages");
 
                     b.Navigation("Notifications");
