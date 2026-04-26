@@ -1,7 +1,7 @@
 name: consumers-voice-system
 type: web
 runtime: dotnet
-buildCommand: dotnet publish ConsumersVoiceSystemPrototype/ConsumersVoiceSystemPrototype.csproj -c Release -o publish
+buildCommand: dotnet publish ConsumersVoiceSystemPrototype.csproj -c Release -o publish
 startCommand: dotnet publish/ConsumersVoiceSystemPrototype.dll
 envVars:
   - key: USE_SQLITE
