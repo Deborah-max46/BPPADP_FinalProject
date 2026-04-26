@@ -13,7 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 var port = Environment.GetEnvironmentVariable("PORT");
 if (!string.IsNullOrEmpty(port))
 {
-    builder.WebUseUrls($"http://0.0.0.0:{port}");
+    builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 }
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
