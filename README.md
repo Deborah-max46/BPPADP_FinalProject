@@ -172,11 +172,8 @@ This system includes features like:
 ---
 
 ## Author
-**DOT NET GROUP F**
-ID: 26244 · Uwase Ketsia Deborah
-ID: 26134 . Philemon MUVUNYI
-ID: 25881 . Ainembabazi Eunice
-ID: 25960 . Hirwa Yvan
+**Uwase Ketsia Deborah**
+ID: 26244
 Adventist University of Central Africa (AUCA)
 Bachelor of Science in Information Technology – Software Engineering
 March 2026
