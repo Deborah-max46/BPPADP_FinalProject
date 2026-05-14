@@ -37,7 +37,6 @@ public class CreateModel : PageModel
     public List<IFormFile>? UploadFiles { get; set; }
 
     public SelectList? CategoryOptions { get; set; }
-    public SelectList? BusinessOptions { get; set; }
 
     public class Input
     {
@@ -48,8 +47,9 @@ public class CreateModel : PageModel
 
         [Display(Name = "Category")] public int CategoryId { get; set; }
 
-        [Display(Name = "Business involved (optional)")]
-        public int? BusinessId { get; set; }
+        [Display(Name = "Business (type the name, optional)")]
+        [StringLength(200)]
+        public string? BusinessName { get; set; }
     }
 
     public async Task OnGetAsync()
@@ -67,12 +67,21 @@ public class CreateModel : PageModel
         if (uid == null)
             return Forbid();
 
+        int? resolvedBusinessId = null;
+        if (!string.IsNullOrWhiteSpace(InputModel.BusinessName))
+        {
+            var matched = await _db.Businesses.AsNoTracking()
+                .FirstOrDefaultAsync(b => b.Name == InputModel.BusinessName.Trim());
+            if (matched != null)
+                resolvedBusinessId = matched.Id;
+        }
+
         var complaint = new Complaint
         {
             Title = InputModel.Title.Trim(),
             Description = InputModel.Description.Trim(),
             CategoryId = InputModel.CategoryId,
-            BusinessId = InputModel.BusinessId,
+            BusinessId = resolvedBusinessId,
             ConsumerId = uid,
             Status = ComplaintStatus.Submitted,
             CreatedAt = DateTime.UtcNow,
@@ -94,7 +103,7 @@ public class CreateModel : PageModel
                     ComplaintId = complaint.Id,
                     UploadedByUserId = uid,
                     FileName = Path.GetFileName(file.FileName),
-                    StoredFileName = meta.Value.StoredFileName,
+                    StoredFileName = meta.Value.RelativeWebPath,
                     ContentType = meta.Value.ContentType,
                     FileSizeBytes = meta.Value.Size,
                     CreatedAt = DateTime.UtcNow
@@ -123,8 +132,5 @@ public class CreateModel : PageModel
     {
         var cats = await _db.Categories.AsNoTracking().OrderBy(c => c.Name).ToListAsync();
         CategoryOptions = new SelectList(cats, "Id", "Name");
-
-        var biz = await _db.Businesses.AsNoTracking().OrderBy(b => b.Name).ToListAsync();
-        BusinessOptions = new SelectList(biz, "Id", "Name");
     }
 }

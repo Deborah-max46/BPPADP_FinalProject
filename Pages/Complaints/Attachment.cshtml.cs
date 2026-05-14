@@ -47,6 +47,10 @@ public class AttachmentModel : PageModel
         if (access == null || !access.CanView)
             return Forbid();
 
+        // If stored in R2 / cloud, redirect to the public URL
+        if (_storage.IsR2Url(att.StoredFileName))
+            return Redirect(att.StoredFileName);
+
         var path = _storage.GetPhysicalPath(att.ComplaintId, att.StoredFileName);
         if (!System.IO.File.Exists(path))
             return NotFound();

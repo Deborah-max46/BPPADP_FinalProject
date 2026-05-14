@@ -18,10 +18,8 @@
             <select asp-for="InputModel.CategoryId" asp-items="Model.CategoryOptions" class="cv-input"></select>
         </div>
         <div class="cv-field">
-            <label asp-for="InputModel.BusinessId" class="cv-label"></label>
-            <select asp-for="InputModel.BusinessId" asp-items="Model.BusinessOptions" class="cv-input">
-                <option value="">— Not sure / not listed —</option>
-            </select>
+            <label asp-for="InputModel.BusinessName" class="cv-label"></label>
+            <input asp-for="InputModel.BusinessName" class="cv-input" placeholder="e.g. Demo Retail Ltd" />
         </div>
         <div class="cv-field">
             <label asp-for="InputModel.Description" class="cv-label"></label>

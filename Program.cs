@@ -4,6 +4,7 @@ using ConsumersVoiceSystemPrototype.Services;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 using QuestPDF.Infrastructure;
 
 QuestPDF.Settings.License = LicenseType.Community;
@@ -16,15 +17,20 @@ if (!string.IsNullOrEmpty(port))
     builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 }
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? throw new InvalidOperationException("Connection string not found.");
 
-var useSqlite = builder.Environment.IsProduction() 
-    || Environment.GetEnvironmentVariable("USE_SQLITE") == "1";
+var usePostgres = connectionString.StartsWith("postgres", StringComparison.OrdinalIgnoreCase)
+    || connectionString.StartsWith("Host=", StringComparison.OrdinalIgnoreCase);
+var useSqlite = !usePostgres && (builder.Environment.IsDevelopment()
+    || Environment.GetEnvironmentVariable("USE_SQLITE") == "1");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-    if (useSqlite)
+    if (usePostgres)
+        options.UseNpgsql(connectionString);
+    else if (useSqlite)
         options.UseSqlite(connectionString);
     else
         options.UseSqlServer(connectionString);
@@ -82,10 +88,10 @@ app.MapRazorPages();
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    if (useSqlite)
-        await db.Database.EnsureCreatedAsync();
-    else
+    if (usePostgres || !useSqlite)
         await db.Database.MigrateAsync();
+    else
+        await db.Database.EnsureCreatedAsync();
 }
 
 await DbInitializer.SeedAsync(app.Services);

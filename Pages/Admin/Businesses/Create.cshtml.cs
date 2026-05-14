@@ -31,9 +31,6 @@ public class CreateModel : PageModel
         [Required, EmailAddress] public string ContactEmail { get; set; } = string.Empty;
 
         public string? Phone { get; set; }
-
-        [Required, EmailAddress, Display(Name = "Owner account email")]
-        public string OwnerEmail { get; set; } = string.Empty;
     }
 
     public void OnGet()
@@ -45,31 +42,16 @@ public class CreateModel : PageModel
         if (!ModelState.IsValid)
             return Page();
 
-        var owner = await _users.FindByEmailAsync(InputModel.OwnerEmail);
-        if (owner == null)
-        {
-            ModelState.AddModelError(nameof(Input.OwnerEmail), "No user with that email.");
-            return Page();
-        }
-
-        if (!await _users.IsInRoleAsync(owner, RoleNames.Business))
-        {
-            ModelState.AddModelError(nameof(Input.OwnerEmail), "User must have Business role.");
-            return Page();
-        }
-
-        if (await _db.Businesses.AnyAsync(b => b.OwnerUserId == owner.Id))
-        {
-            ModelState.AddModelError(nameof(Input.OwnerEmail), "That user already owns a business.");
-            return Page();
-        }
+        var currentUser = await _users.GetUserAsync(User);
+        if (currentUser == null)
+            return Challenge();
 
         _db.Businesses.Add(new Models.Business
         {
             Name = InputModel.Name.Trim(),
             ContactEmail = InputModel.ContactEmail.Trim(),
             Phone = string.IsNullOrWhiteSpace(InputModel.Phone) ? null : InputModel.Phone.Trim(),
-            OwnerUserId = owner.Id
+            OwnerUserId = currentUser.Id
         });
         await _db.SaveChangesAsync();
         TempData["StatusMessage"] = "Business created.";

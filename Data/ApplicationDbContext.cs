@@ -20,7 +20,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         builder.Entity<Business>(e =>
         {
-            e.HasIndex(b => b.OwnerUserId).IsUnique();
+            e.HasIndex(b => b.OwnerUserId);
             e.HasOne(b => b.Owner)
                 .WithMany()
                 .HasForeignKey(b => b.OwnerUserId)
